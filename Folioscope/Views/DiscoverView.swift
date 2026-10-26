@@ -16,10 +16,14 @@ struct DiscoverView: View {
     var body: some View {
         NavigationStack {
             List(viewModel.stocks) { stock in
-                StockRowView(stock: stock)
+                NavigationLink {
+                    StockDetailView(stock: stock)
+                } label: {
+                    StockRowView(stock: stock)
+                }
             }
             .navigationTitle("Discover")
-            .onAppear{
+            .onAppear {
                 viewModel.loadStocks()
             }
         }
