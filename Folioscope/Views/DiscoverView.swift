@@ -8,12 +8,20 @@
 import SwiftUI
 
 struct DiscoverView: View {
+    
+    @State private var viewModel = DiscoverViewModel (
+        service: MockMarketDataService()
+    )
+    
     var body: some View {
         NavigationStack {
-            List(Stock.samples) { stock in
+            List(viewModel.stocks) { stock in
                 StockRowView(stock: stock)
             }
             .navigationTitle("Discover")
+            .onAppear{
+                viewModel.loadStocks()
+            }
         }
     }
 }
