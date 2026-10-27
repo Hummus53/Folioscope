@@ -52,3 +52,14 @@ extension Stock {
         )
     ]
 }
+
+extension StockQuoteResponse {
+    func toStock() -> Stock {
+        return Stock (
+            symbol: symbol,
+            companyName: name,
+            price: price,
+            dailyChangePercent: changePercentage
+        )
+    }
+}

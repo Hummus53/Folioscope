@@ -12,7 +12,6 @@ struct PortfolioView: View {
         service: MockMarketDataService()
     )
 
-    // Fixed mock totals for today's dashboard.
     private let portfolioValue = 10_750.00
     private let totalInvested = 10_000.00
 

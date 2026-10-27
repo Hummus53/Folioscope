@@ -25,6 +25,7 @@ struct DiscoverView: View {
             .navigationTitle("Discover")
             .onAppear {
                 viewModel.loadStocks()
+                viewModel.testSampleDecoding()
             }
         }
     }
