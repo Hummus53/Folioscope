@@ -7,17 +7,33 @@
 
 import Observation
 
+@MainActor
 @Observable
 class DiscoverViewModel {
     private(set) var stocks: [Stock] = []
-    private let service: MockMarketDataService
+    private let service: any MarketDataService
+    private(set) var isLoading = false
+    private(set) var errorMessage: String?
     
-    init(service: MockMarketDataService) {
+    init(service: any MarketDataService) {
         self.service = service
     }
     
-    func loadStocks() {
-        stocks = service.fetchStocks()
+    func loadStocks() async {
+        isLoading = true
+        errorMessage = nil
+
+        defer {
+            isLoading = false
+        }
+
+        do {
+            stocks = try await service.fetchStocks()
+        } catch is CancellationError {
+            return
+        } catch {
+            errorMessage = "Unable to load stocks. Please try again."
+        }
     }
     
     func testSampleDecoding() {

@@ -48,8 +48,8 @@ struct PortfolioView: View {
                 }
             }
             .navigationTitle("Portfolio")
-            .onAppear {
-                viewModel.loadStocks()
+            .task {
+                await viewModel.loadStocks()
             }
         }
     }
