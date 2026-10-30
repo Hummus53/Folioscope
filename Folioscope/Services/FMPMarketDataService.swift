@@ -56,6 +56,46 @@ struct FMPMarketDataService: MarketDataService {
             quote.toStock()
         }
     }
+    
+    func searchStocks(query: String) async throws -> [StockSearchResponse] {
+        guard var components = URLComponents (
+            string: "https://financialmodelingprep.com/stable/search-symbol"
+        ) else {
+            throw MarketDataError.invalidURL
+        }
+        
+        components.queryItems = [
+            URLQueryItem(name: "query", value: query),
+            URLQueryItem(name: "apikey", value: Secrets.fmpAPIKey)
+        ]
+        
+        guard let url = components.url else {
+            throw MarketDataError.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let response = response as? HTTPURLResponse else {
+            throw MarketDataError.invalidResponse
+        }
+        
+        guard response.statusCode == 200 else {
+            throw MarketDataError.httpError(response.statusCode)
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            
+            return try  decoder.decode (
+                [StockSearchResponse].self, from: data
+            )
+        } catch {
+            throw MarketDataError.invalidData
+        }
+        
+        
+    }
+    
 }
 
 enum MarketDataError: Error {

@@ -7,4 +7,6 @@
 
 protocol MarketDataService {
     func fetchStocks() async throws -> [Stock]
+    
+    func searchStocks(query: String) async throws -> [StockSearchResponse]
 }
